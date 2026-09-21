@@ -2,16 +2,17 @@ pipeline {
     agent any
 
     parameters {
+
         choice(
             name: 'ENVIRONMENT',
             choices: ['development', 'testing', 'production'],
             description: 'Select deployment environment'
         )
 
-        string(
+        choice(
             name: 'VERSION',
             choices: ['1.0', '2.0', '3.0'],
-            description: 'Application version'
+            description: 'Select application version'
         )
     }
 
