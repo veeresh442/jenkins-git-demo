@@ -10,7 +10,7 @@ pipeline {
 
         string(
             name: 'VERSION',
-            defaultValue: '1.0',
+            defaultValue: '1.0','2.0'
             description: 'Application version'
         )
     }
