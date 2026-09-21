@@ -9,10 +9,10 @@ pipeline {
             description: 'Select deployment environment'
         )
 
-        choice(
+        string(
             name: 'VERSION',
-            choices: ['1.0', '2.0', '3.0'],
-            description: 'Select application version'
+            defaultValue: '1.0',
+            description: 'Application version'
         )
     }
 
@@ -31,6 +31,12 @@ pipeline {
         }
 
         stage('Deploy') {
+            when {
+                expression {
+                    params.ENVIRONMENT == 'production'
+                }
+            }
+
             steps {
                 echo "Deploying version ${VERSION} to ${ENVIRONMENT}"
             }
