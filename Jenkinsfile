@@ -41,6 +41,7 @@ pipeline {
                 bat '''
                     echo Running tests...
                     echo Test completed successfully
+                    exit /b 1
                 '''
             }
         }
