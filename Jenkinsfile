@@ -1,9 +1,18 @@
 pipeline {
     agent any
 
-    environment {
-        ENVIRONMENT = 'development'
-        VERSION = '1.0'
+    parameters {
+        choice(
+            name: 'ENVIRONMENT',
+            choices: ['development', 'testing', 'production'],
+            description: 'Select deployment environment'
+        )
+
+        string(
+            name: 'VERSION',
+            defaultValue: '1.0',
+            description: 'Application version'
+        )
     }
 
     stages {
