@@ -19,35 +19,53 @@ pipeline {
     stages {
 
         stage('Build') {
-    steps {
-        echo "Building version ${VERSION}"
+            steps {
 
-        bat '''
-            echo Starting Windows build process
-            echo Application version: %VERSION%
-            echo Current directory:
-            cd
-            echo Files in workspace:
-            dir
-        '''
-    }
-}
+                echo "Building version ${VERSION}"
+
+                bat '''
+                    echo Starting Windows build process
+                    echo Application version: %VERSION%
+                    echo Current directory:
+                    cd
+                    echo Files in workspace:
+                    dir
+                '''
+            }
+        }
 
         stage('Test') {
             steps {
                 echo "Testing ${ENVIRONMENT} environment"
+
+                bat '''
+                    echo Running tests...
+                    echo Test completed successfully
+                '''
             }
         }
 
         stage('Deploy') {
+            when {
+                expression {
+                    params.ENVIRONMENT == 'production'
+                }
+            }
 
             steps {
                 echo "Deploying version ${VERSION} to ${ENVIRONMENT}"
+
+                bat '''
+                    echo Starting deployment...
+                    echo Deploying version %VERSION%
+                    echo Deployment completed successfully
+                '''
             }
         }
     }
 
     post {
+
         always {
             echo 'Pipeline execution completed.'
         }
