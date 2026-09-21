@@ -19,10 +19,19 @@ pipeline {
     stages {
 
         stage('Build') {
-            steps {
-                echo "Building version ${VERSION}"
-            }
-        }
+    steps {
+        echo "Building version ${VERSION}"
+
+        bat '''
+            echo Starting Windows build process
+            echo Application version: %VERSION%
+            echo Current directory:
+            cd
+            echo Files in workspace:
+            dir
+        '''
+    }
+}
 
         stage('Test') {
             steps {
@@ -31,11 +40,6 @@ pipeline {
         }
 
         stage('Deploy') {
-            when {
-                expression {
-                    params.ENVIRONMENT == 'production'
-                }
-            }
 
             steps {
                 echo "Deploying version ${VERSION} to ${ENVIRONMENT}"
