@@ -46,18 +46,23 @@ pipeline {
         }
 
         stage('Test') {
-            steps {
+    steps {
+        echo "Testing ${ENVIRONMENT} environment"
 
-                echo "Testing ${ENVIRONMENT} environment"
-
-                bat '''
-                    echo Running tests...
-                    echo Application: %APP_NAME%
-                    echo Version: %VERSION%
-                    exit /b 0
-                '''
-            }
+        catchError(
+            buildResult: 'UNSTABLE',
+            stageResult: 'FAILURE'
+        ) {
+            bat '''
+                echo Running tests...
+                echo Test found a problem!
+                exit /b 1
+            '''
         }
+
+        echo 'Pipeline continued after the test failure.'
+    }
+}
 
         stage('Deploy') {
 
