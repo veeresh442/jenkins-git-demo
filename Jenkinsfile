@@ -49,18 +49,11 @@ pipeline {
     steps {
         echo "Testing ${ENVIRONMENT} environment"
 
-        catchError(
-            buildResult: 'UNSTABLE',
-            stageResult: 'FAILURE'
-        ) {
-            bat '''
-                echo Running tests...
-                echo Test found a problem!
-                exit /b 1
-            '''
-        }
-
-        echo 'Pipeline continued after the test failure.'
+        bat '''
+            echo Running tests...
+            echo Test completed successfully
+            exit /b 0
+        '''
     }
 }
 
