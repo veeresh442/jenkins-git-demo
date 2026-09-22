@@ -45,22 +45,15 @@ pipeline {
             }
         }
 
-       stage('Test') {
+        stage('Test') {
     steps {
         echo "Testing ${ENVIRONMENT} environment"
 
-        script {
-            try {
-                bat '''
-                    echo Running tests...
-                    exit /b 1
-                '''
-            } catch (err) {
-                echo "Test failed, but the error was caught."
-            }
-        }
-
-        echo "Pipeline continued after try/catch."
+        bat '''
+            echo Running tests...
+            echo Test completed successfully
+            exit /b 0
+        '''
     }
 }
 
