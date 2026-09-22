@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     parameters {
-
         choice(
             name: 'ENVIRONMENT',
             choices: ['development', 'testing', 'production'],
@@ -23,14 +22,12 @@ pipeline {
     stages {
 
         stage('Build') {
-
             environment {
                 BUILD_TYPE = 'release'
             }
 
             steps {
-
-                echo "Application: ${APP_NAME}"
+                echo "Building ${APP_NAME}"
                 echo "Version: ${VERSION}"
                 echo "Build type: ${BUILD_TYPE}"
 
@@ -39,26 +36,26 @@ pipeline {
                     echo Application: %APP_NAME%
                     echo Version: %VERSION%
                     echo Build type: %BUILD_TYPE%
-                    echo Files in workspace:
-                    dir
+                    echo Build completed successfully
                 '''
             }
         }
 
         stage('Test') {
-    steps {
-        echo "Testing ${ENVIRONMENT} environment"
+            steps {
+                echo "Testing ${ENVIRONMENT} environment"
 
-        bat '''
-            echo Running tests...
-            echo Test completed successfully
-            exit /b 0
-        '''
-    }
-}
+                bat '''
+                    echo Running tests...
+                    echo Application: %APP_NAME%
+                    echo Version: %VERSION%
+                    echo Tests completed successfully
+                    exit /b 0
+                '''
+            }
+        }
 
         stage('Deploy') {
-
             when {
                 expression {
                     params.ENVIRONMENT == 'production'
@@ -66,8 +63,7 @@ pipeline {
             }
 
             steps {
-
-                echo "Deploying version ${VERSION} to ${ENVIRONMENT}"
+                echo "Deploying ${APP_NAME} version ${VERSION} to ${ENVIRONMENT}"
 
                 bat '''
                     echo Starting deployment...
@@ -81,13 +77,12 @@ pipeline {
     }
 
     post {
-
         always {
             echo 'Pipeline execution completed.'
         }
 
         success {
-            echo 'Pipeline was successful!'
+            echo 'Pipeline completed successfully!'
         }
 
         failure {
