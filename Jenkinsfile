@@ -54,6 +54,28 @@ pipeline {
                 '''
             }
         }
+        
+        stage('Credential Test') {
+    steps {
+        withCredentials([
+            string(
+                credentialsId: 'demo-secret',
+                variable: 'MY_SECRET'
+            )
+        ]) {
+            bat '''
+                echo Checking Jenkins credential injection...
+
+                if "%MY_SECRET%"=="" (
+                    echo Secret was NOT injected
+                    exit /b 1
+                ) else (
+                    echo Secret was successfully injected
+                )
+            '''
+        }
+    }
+}
 
         stage('Deploy') {
             when {
