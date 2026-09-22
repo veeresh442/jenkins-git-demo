@@ -16,18 +16,29 @@ pipeline {
         )
     }
 
+    environment {
+        APP_NAME = 'JenkinsDemo'
+    }
+
     stages {
 
         stage('Build') {
+
+            environment {
+                BUILD_TYPE = 'release'
+            }
+
             steps {
 
-                echo "Building version ${VERSION}"
+                echo "Application: ${APP_NAME}"
+                echo "Version: ${VERSION}"
+                echo "Build type: ${BUILD_TYPE}"
 
                 bat '''
                     echo Starting Windows build process
-                    echo Application version: %VERSION%
-                    echo Current directory:
-                    cd
+                    echo Application: %APP_NAME%
+                    echo Version: %VERSION%
+                    echo Build type: %BUILD_TYPE%
                     echo Files in workspace:
                     dir
                 '''
@@ -36,16 +47,20 @@ pipeline {
 
         stage('Test') {
             steps {
+
                 echo "Testing ${ENVIRONMENT} environment"
 
                 bat '''
                     echo Running tests...
+                    echo Application: %APP_NAME%
+                    echo Version: %VERSION%
                     exit /b 0
                 '''
             }
         }
 
         stage('Deploy') {
+
             when {
                 expression {
                     params.ENVIRONMENT == 'production'
@@ -53,11 +68,14 @@ pipeline {
             }
 
             steps {
+
                 echo "Deploying version ${VERSION} to ${ENVIRONMENT}"
 
                 bat '''
                     echo Starting deployment...
-                    echo Deploying version %VERSION%
+                    echo Application: %APP_NAME%
+                    echo Version: %VERSION%
+                    echo Environment: %ENVIRONMENT%
                     echo Deployment completed successfully
                 '''
             }
